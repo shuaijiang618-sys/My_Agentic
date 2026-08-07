@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "financials.schema.json",
+  "title": "Financials",
+  "type": "object",
+  "required": ["run_id", "entity", "period", "statements"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "entity": {
+      "type": "object",
+      "required": ["stock_code", "company_name"],
+      "properties": {
+        "stock_code": { "type": "string" },
+        "company_name": { "type": "string" }
+      }
+    },
+    "period": {
+      "type": "object",
+      "required": ["report_year", "currency", "unit"],
+      "properties": {
+        "report_year": { "type": "integer" },
+        "currency": { "type": "string" },
+        "unit": { "type": "string" }
+      }
+    },
+    "statements": { "type": "object" },
+    "provenance": { "type": "object" }
+  },
+  "additionalProperties": true
+}

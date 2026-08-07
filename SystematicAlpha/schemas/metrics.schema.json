@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "metrics.schema.json",
+  "title": "Metrics",
+  "type": "object",
+  "required": ["run_id", "metrics"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["computable"],
+        "properties": {
+          "value": { "type": ["number", "null"] },
+          "value_prior": { "type": ["number", "null"] },
+          "formula": { "type": "string" },
+          "category": { "type": "string" },
+          "inputs": { "type": "object" },
+          "computable": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,23 @@
+# 正文区块锚点（用于章节切分）
+sections:
+  - id: mdna
+    title: 管理层讨论与分析
+    keywords:
+      - "管理层讨论与分析"
+      - "经营情况讨论与分析"
+  - id: risk
+    title: 风险提示
+    keywords:
+      - "可能面对的风险"
+      - "风险提示"
+      - "风险因素"
+  - id: audit
+    title: 审计报告
+    keywords:
+      - "审计报告"
+      - "审计意见"
+  - id: corporate_info
+    title: 公司基本情况
+    keywords:
+      - "公司基本情况"
+      - "公司简介"

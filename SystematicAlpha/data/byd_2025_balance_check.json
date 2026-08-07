@@ -1,0 +1,23 @@
+{
+  "run_id": "byd_2025",
+  "unit": "元",
+  "checks": [
+    {
+      "formula": "total_assets = total_liabilities + total_equity",
+      "period": "current",
+      "lhs": 883729883000.0,
+      "rhs": 883729883000.0,
+      "diff": 0.0,
+      "passed": true
+    },
+    {
+      "formula": "total_assets = total_liabilities + total_equity",
+      "period": "prior",
+      "lhs": 783355855000.0,
+      "rhs": 783355855000.0,
+      "diff": 0.0,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

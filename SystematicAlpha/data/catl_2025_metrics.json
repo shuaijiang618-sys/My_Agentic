@@ -1,0 +1,272 @@
+{
+  "run_id": "catl_2025",
+  "entity": {
+    "stock_code": null,
+    "company_name": "宁德时代"
+  },
+  "period": {
+    "report_year": 2025,
+    "currency": "CNY",
+    "unit": "元",
+    "report_unit": "千元"
+  },
+  "metrics": {
+    "debt_to_asset": {
+      "value": 0.619393,
+      "value_prior": 0.652382,
+      "formula": "total_liabilities / total_assets",
+      "category": "solvency",
+      "inputs": {
+        "current": {
+          "total_liabilities": 603801220000.0,
+          "total_assets": 974827544000.0
+        },
+        "prior": {
+          "total_liabilities": 513201949000.0,
+          "total_assets": 786658123000.0
+        }
+      },
+      "computable": true
+    },
+    "debt_to_equity": {
+      "value": 1.627381,
+      "value_prior": 1.876725,
+      "formula": "total_liabilities / total_equity",
+      "category": "solvency",
+      "inputs": {
+        "current": {
+          "total_liabilities": 603801220000.0,
+          "total_equity": 371026324000.0
+        },
+        "prior": {
+          "total_liabilities": 513201949000.0,
+          "total_equity": 273456174000.0
+        }
+      },
+      "computable": true
+    },
+    "current_ratio": {
+      "value": 1.597698,
+      "value_prior": 1.608411,
+      "formula": "current_assets / current_liabilities",
+      "category": "solvency",
+      "inputs": {
+        "current": {
+          "current_assets": 638481543000.0,
+          "current_liabilities": 399625988000.0
+        },
+        "prior": {
+          "current_assets": 510142089000.0,
+          "current_liabilities": 317171534000.0
+        }
+      },
+      "computable": true
+    },
+    "quick_ratio": {
+      "value": 1.361161,
+      "value_prior": 1.419757,
+      "formula": "(current_assets - inventory) / current_liabilities",
+      "category": "solvency",
+      "inputs": {
+        "current": {
+          "current_assets": 638481543000.0,
+          "inventory": 94526239000.0,
+          "current_liabilities": 399625988000.0
+        },
+        "prior": {
+          "current_assets": 510142089000.0,
+          "inventory": 59835533000.0,
+          "current_liabilities": 317171534000.0
+        }
+      },
+      "computable": true
+    },
+    "cash_ratio": {
+      "value": 0.834563,
+      "value_prior": 0.956933,
+      "formula": "cash / current_liabilities",
+      "category": "solvency",
+      "inputs": {
+        "current": {
+          "cash": 333512927000.0,
+          "current_liabilities": 399625988000.0
+        },
+        "prior": {
+          "cash": 303511993000.0,
+          "current_liabilities": 317171534000.0
+        }
+      },
+      "computable": true
+    },
+    "gross_margin": {
+      "value": 0.262728,
+      "value_prior": 0.244449,
+      "formula": "(revenue - operating_cost) / revenue",
+      "category": "profitability",
+      "inputs": {
+        "current": {
+          "revenue": 423701834000.0,
+          "operating_cost": 312383297000.0
+        },
+        "prior": {
+          "revenue": 362012554000.0,
+          "operating_cost": 273518959000.0
+        }
+      },
+      "computable": true
+    },
+    "operating_margin": {
+      "value": 0.211277,
+      "value_prior": 0.176933,
+      "formula": "operating_profit / revenue",
+      "category": "profitability",
+      "inputs": {
+        "current": {
+          "operating_profit": 89518636000.0,
+          "revenue": 423701834000.0
+        },
+        "prior": {
+          "operating_profit": 64051799000.0,
+          "revenue": 362012554000.0
+        }
+      },
+      "computable": true
+    },
+    "net_margin": {
+      "value": 0.181227,
+      "value_prior": 0.149185,
+      "formula": "net_profit / revenue",
+      "category": "profitability",
+      "inputs": {
+        "current": {
+          "net_profit": 76786309000.0,
+          "revenue": 423701834000.0
+        },
+        "prior": {
+          "net_profit": 54006794000.0,
+          "revenue": 362012554000.0
+        }
+      },
+      "computable": true
+    },
+    "roe": {
+      "value": 0.247249,
+      "value_prior": null,
+      "formula": "net_profit_parent / avg(equity_attributable_to_parent)",
+      "category": "profitability",
+      "inputs": {
+        "current": {
+          "net_profit_parent": 72201282000.0,
+          "avg_equity_attributable_to_parent": 292018890000.0
+        },
+        "prior": {
+          "net_profit_parent": 50744682000.0,
+          "avg_equity_attributable_to_parent": null
+        }
+      },
+      "computable": true
+    },
+    "roa": {
+      "value": 0.087184,
+      "value_prior": null,
+      "formula": "net_profit / avg(total_assets)",
+      "category": "profitability",
+      "inputs": {
+        "current": {
+          "net_profit": 76786309000.0,
+          "avg_total_assets": 880742833500.0
+        },
+        "prior": {
+          "net_profit": 54006794000.0,
+          "avg_total_assets": null
+        }
+      },
+      "computable": true
+    },
+    "ocf_to_net_profit": {
+      "value": 1.734944,
+      "value_prior": 1.795892,
+      "formula": "cash_from_operations / net_profit",
+      "category": "cash_flow",
+      "inputs": {
+        "current": {
+          "cash_from_operations": 133219982000.0,
+          "net_profit": 76786309000.0
+        },
+        "prior": {
+          "cash_from_operations": 96990345000.0,
+          "net_profit": 54006794000.0
+        }
+      },
+      "computable": true
+    },
+    "ocf_to_revenue": {
+      "value": 0.314419,
+      "value_prior": 0.26792,
+      "formula": "cash_from_operations / revenue",
+      "category": "cash_flow",
+      "inputs": {
+        "current": {
+          "cash_from_operations": 133219982000.0,
+          "revenue": 423701834000.0
+        },
+        "prior": {
+          "cash_from_operations": 96990345000.0,
+          "revenue": 362012554000.0
+        }
+      },
+      "computable": true
+    },
+    "receivables_turnover": {
+      "value": 6.029679,
+      "value_prior": null,
+      "formula": "revenue / avg(accounts_receivable)",
+      "category": "efficiency",
+      "inputs": {
+        "current": {
+          "revenue": 423701834000.0,
+          "avg_accounts_receivable": 70269387000.0
+        },
+        "prior": {
+          "revenue": 362012554000.0,
+          "avg_accounts_receivable": null
+        }
+      },
+      "computable": true
+    },
+    "inventory_turnover": {
+      "value": 4.047418,
+      "value_prior": null,
+      "formula": "operating_cost / avg(inventory)",
+      "category": "efficiency",
+      "inputs": {
+        "current": {
+          "operating_cost": 312383297000.0,
+          "avg_inventory": 77180886000.0
+        },
+        "prior": {
+          "operating_cost": 273518959000.0,
+          "avg_inventory": null
+        }
+      },
+      "computable": true
+    },
+    "total_asset_turnover": {
+      "value": 0.481073,
+      "value_prior": null,
+      "formula": "revenue / avg(total_assets)",
+      "category": "efficiency",
+      "inputs": {
+        "current": {
+          "revenue": 423701834000.0,
+          "avg_total_assets": 880742833500.0
+        },
+        "prior": {
+          "revenue": 362012554000.0,
+          "avg_total_assets": null
+        }
+      },
+      "computable": true
+    }
+  }
+}

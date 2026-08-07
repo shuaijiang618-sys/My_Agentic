@@ -1,0 +1,22 @@
+# semiconductor-china-research · 中国半导体产业多轮研究编排 —— 依赖
+# 安装: python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+# 智能体框架 (Microsoft Agent Framework)
+agent-framework-core==1.8.0
+agent-framework-openai==1.8.0
+
+# 联网检索
+ddgs==9.14.4
+
+# Web 服务
+fastapi==0.136.3
+uvicorn[standard]==0.49.0
+
+# 读 .env 配置
+python-dotenv==1.2.2
+
+# Block 3C · A/H 股行情快照(可选;未装则自动跳过 stock_snapshot)
+akshare>=1.14.0
+
+# Phase 3 M3.2 · PDF 导出(reportlab 内置 STSong-Light 中文)
+reportlab>=4.0.0

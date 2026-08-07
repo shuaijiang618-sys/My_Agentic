@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "analysis.schema.json",
+  "title": "Analysis",
+  "type": "object",
+  "required": ["run_id", "overall_risk_level", "risk_dimensions", "key_findings"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "analyst": { "type": "string" },
+    "analyzed_at": { "type": "string", "format": "date-time" },
+    "overall_risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "risk_dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "score", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "score": { "type": "number" },
+          "scale": { "type": "string" },
+          "summary": { "type": "string" },
+          "evidence": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "key_findings": { "type": "array", "items": { "type": "string" } },
+    "red_flags": { "type": "array", "items": { "type": "string" } },
+    "chart_overrides": { "type": "object" }
+  },
+  "additionalProperties": true
+}

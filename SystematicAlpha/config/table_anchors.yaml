@@ -1,0 +1,53 @@
+# 三大表标题锚点（用于 PDF 内定位）
+balance_sheet:
+  keywords:
+    - "合并资产负债表"
+  exclude:
+    - "母公司资产负债表"
+  start_row_markers:
+    - "流动资产"
+    - "货币资金"
+    - "项目"
+  end_row_markers:
+    - "负债和所有者权益总计"
+    - "负债和股东权益总计"
+  stop_page_markers:
+    - "2、合并利润表"
+    - "母公司资产负债表"
+    - "2、母公司资产负债表"
+
+income_statement:
+  keywords:
+    - "合并利润表"
+    - "合并综合收益表"
+  exclude:
+    - "母公司利润表"
+  start_row_markers:
+    - "一、营业总收入"
+    - "营业收入"
+    - "项目"
+  end_row_markers:
+    - "稀释每股收益"
+    - "基本每股收益"
+  stop_page_markers:
+    - "3、合并所有者权益变动表"
+    - "4、合并现金流量表"
+    - "母公司利润表"
+    - "4、母公司利润表"
+
+cash_flow:
+  keywords:
+    - "合并现金流量表"
+  exclude:
+    - "母公司现金流量表"
+  start_row_markers:
+    - "一、经营活动产生的现金流量"
+    - "经营活动产生的现金流量"
+    - "项目"
+  end_row_markers:
+    - "六、期末现金及现金等价物余额"
+    - "期末现金及现金等价物余额"
+  stop_page_markers:
+    - "母公司现金流量表"
+    - "6、母公司现金流量表"
+    - "财务报表附注"

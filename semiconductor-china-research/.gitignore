@@ -1,0 +1,20 @@
+# 密钥配置(只入库 .env.example 模板,真 .env 绝不入库)
+.env
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 日志(统一在 backend/logs/)
+backend/logs/*.log
+backend/logs/server.pid
+
+# sqlite 运行期临时文件
+*.db-shm
+*.db-wal
+
+# 虚拟环境
+.venv*/
+
+# 注: backend/data/runs.db 可保留演示历史
+# Phase 2: backend/data/industry_kb.db 种子库可入库

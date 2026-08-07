@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ company_name }} — {{ report_year }} 年报投研报告</title>
+  <style>{{ styles | safe }}</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="report-header">
+    <h1>{{ company_name }}{% if stock_code and stock_code != '—' %}（{{ stock_code }}）{% endif %}</h1>
+    <p class="subtitle">{{ report_year }} 年度报告 · 财务投研分析</p>
+    <div class="report-meta">
+      <span>运行 ID：{{ run_id }}</span>
+      <span>研判：{{ analyst }} · {{ analyzed_at }}</span>
+      <span>报告生成：{{ generated_at }}</span>
+      <span>综合风险：
+        <span class="risk-badge {{ risk_badge_class }}">{{ overall_risk_label }}</span>
+      </span>
+    </div>
+  </header>
+
+  {# ── 投资摘要 ── #}
+  <section id="summary">
+    <h2>投资摘要</h2>
+    <p class="lead">{{ overall_risk_summary }}</p>
+    {% if narratives.summary %}
+      <div class="narrative">{{ narratives.summary | safe }}</div>
+    {% else %}
+      <ul>
+        {% for item in key_findings %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
+
+  {# ── 财务概览 ── #}
+  <section id="financial_overview">
+    <h2>财务概览</h2>
+    <div class="kpi-grid">
+      {% for kpi in highlights %}
+      <div class="kpi-card">
+        <div class="label">{{ kpi.label }}</div>
+        <div class="value">{{ kpi.current }}</div>
+        <div class="prior">{{ kpi.prior_year }}：{{ kpi.prior }}</div>
+        <div class="change {% if kpi.change.startswith('+') %}change-up{% elif kpi.change.startswith('-') %}change-down{% endif %}">
+          同比 {{ kpi.change }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# ── 关键指标 ── #}
+  <section id="metrics">
+    <h2>关键财务指标</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>指标</th>
+          <th class="num">{{ report_year }}</th>
+          <th class="num">{{ prior_year }}</th>
+          <th>计算公式</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in metrics_rows %}
+        <tr>
+          <td>{{ row.name }}</td>
+          <td class="num">{{ row.current }}</td>
+          <td class="num">{{ row.prior }}</td>
+          <td class="formula">{{ row.formula }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  {# ── 跨表验证 ── #}
+  <section id="cross_validation">
+    <h2>三表勾稽与跨表验证</h2>
+    <p class="lead">{{ cross_summary }}</p>
+    {% if cross_validation %}
+    <div class="validation-summary">
+      <div class="stat-box passed">
+        <div class="num">{{ cross_validation.passed_checks | length }}</div>
+        <div>通过项</div>
+      </div>
+      <div class="stat-box explained">
+        <div class="num">{{ cross_validation.explained_differences | length }}</div>
+        <div>口径差异（已解释）</div>
+      </div>
+      <div class="stat-box alert">
+        <div class="num">{{ cross_validation.divergence_alerts | length }}</div>
+        <div>背离告警</div>
+      </div>
+    </div>
+
+    <h3>✓ 勾稽通过</h3>
+    <table>
+      <thead>
+        <tr><th>检查项</th><th>状态</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        {% for check in cross_validation.passed_checks %}
+        <tr>
+          <td>{{ check.name }}</td>
+          <td class="status-pass">通过</td>
+          <td>
+            {% if check.data %}
+              {% for k, v in check.data.items() %}
+                {% if k not in ['evidence', 'note'] %}{{ k }}={{ v }}{% if not loop.last %}；{% endif %}{% endif %}
+              {% endfor %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if cross_validation.explained_differences %}
+    <h3>△ 口径差异（非差错）</h3>
+    <table>
+      <thead>
+        <tr><th>项目</th><th>信号</th></tr>
+      </thead>
+      <tbody>
+        {% for item in cross_validation.explained_differences %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td class="status-explained">{{ item.signal }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    <h3>⚠ 增速/结构背离告警</h3>
+    <ul class="signal-list">
+      {% for alert in cross_validation.divergence_alerts %}
+      <li class="severity-{{ alert.severity }}">
+        <strong>[{{ alert.severity }}]</strong> {{ alert.name }}：{{ alert.signal }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% if cross_validation.overall_conclusion %}
+    <p><strong>验证结论：</strong>{{ cross_validation.overall_conclusion }}</p>
+    {% endif %}
+    {% endif %}
+  </section>
+
+  {# ── 图表分析 ── #}
+  <section id="charts">
+    <h2>图表分析</h2>
+    <div class="chart-grid">
+      {% for chart in charts[:7] %}
+      <div class="chart-card">
+        <h3>{{ chart.title }}</h3>
+        <img src="{{ chart.src }}" alt="{{ chart.title }}" loading="lazy">
+      </div>
+      {% endfor %}
+    </div>
+    {% if charts | length > 7 %}
+    <h3 style="margin-top:2rem">补充图表</h3>
+    <div class="chart-grid two-col">
+      {% for chart in charts[7:] %}
+      <div class="chart-card">
+        <h3>{{ chart.title }}</h3>
+        <img src="{{ chart.src }}" alt="{{ chart.title }}" loading="lazy">
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  {# ── 风险因素 ── #}
+  <section id="risks">
+    <h2>风险因素</h2>
+    <div class="risk-grid">
+      {% for dim in risk_dimensions %}
+      <div class="risk-card">
+        <div class="risk-header">
+          <strong>{{ dim.name }}</strong>
+          <span class="score">{{ dim.score }}/5</span>
+        </div>
+        <p>{{ dim.summary }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <h3>隐性风险信号</h3>
+    <ul class="signal-list">
+      {% for sig in implicit_risk_signals %}
+      <li class="severity-{{ sig.severity }}">
+        <strong>[{{ sig.dimension }} · {{ sig.severity }}]</strong> {{ sig.signal }}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h3>红旗清单</h3>
+    {% if narratives.risks %}
+      <div class="narrative">{{ narratives.risks | safe }}</div>
+    {% else %}
+      <ul class="flag-list">
+        {% for flag in red_flags %}
+        <li>{{ flag }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
+
+  {# ── 财务质量 ── #}
+  {% if narratives.financial_quality %}
+  <section id="financial_quality">
+    <h2>财务质量深度分析</h2>
+    <div class="narrative">{{ narratives.financial_quality | safe }}</div>
+  </section>
+  {% endif %}
+
+  {# ── 结论 ── #}
+  <section id="conclusion">
+    <h2>结论</h2>
+    {% if narratives.conclusion %}
+      <div class="narrative">{{ narratives.conclusion | safe }}</div>
+    {% else %}
+      <p>综合风险评级：
+        <span class="risk-badge {{ risk_badge_class }}">{{ overall_risk_label }}</span>
+      </p>
+      <p>{{ overall_risk_summary }}</p>
+    {% endif %}
+  </section>
+
+  <footer class="disclaimer">
+    本报告由本地 A 股年报量化投研系统自动汇编（结构化数据 + Agent 研判 + 确定性出图），仅供研究参考，不构成投资建议。
+    <br>数据来源：上市公司公开年报 · 运行 ID {{ run_id }}
+  </footer>
+
+</div>
+</body>
+</html>

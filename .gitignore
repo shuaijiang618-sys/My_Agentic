@@ -1,0 +1,40 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+id_rsa*
+
+# IDE / tooling
+.idea/
+.vscode/
+*.swp
+.cursor/
+
+# Large local artifacts
+**/doc_emb/
+**/.ipynb_checkpoints/
+**/*.db
+**/backend/logs/*.jsonl

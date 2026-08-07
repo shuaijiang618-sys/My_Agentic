@@ -1,0 +1,39 @@
+{
+  "run_id": "catl_2025",
+  "unit": "元",
+  "checks": [
+    {
+      "formula": "total_assets = total_liabilities + total_equity",
+      "period": "current",
+      "lhs": 974827544000.0,
+      "rhs": 974827544000.0,
+      "diff": 0.0,
+      "passed": true
+    },
+    {
+      "formula": "total_assets = total_liabilities + total_equity",
+      "period": "prior",
+      "lhs": 786658123000.0,
+      "rhs": 786658123000.0,
+      "diff": 0.0,
+      "passed": true
+    },
+    {
+      "formula": "total_assets = total_liabilities_and_equity",
+      "period": "current",
+      "lhs": 974827544000.0,
+      "rhs": 974827544000.0,
+      "diff": 0.0,
+      "passed": true
+    },
+    {
+      "formula": "total_assets = total_liabilities_and_equity",
+      "period": "prior",
+      "lhs": 786658123000.0,
+      "rhs": 786658123000.0,
+      "diff": 0.0,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

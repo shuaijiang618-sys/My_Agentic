@@ -1,0 +1,23 @@
+# HTML 报告章节顺序
+sections:
+  - id: summary
+    title: "投资摘要"
+    source: narrative/summary.md
+  - id: financial_overview
+    title: "财务概览"
+    source: auto
+  - id: metrics
+    title: "关键指标"
+    source: auto
+  - id: charts
+    title: "图表分析"
+    source: auto
+  - id: financial_quality
+    title: "财务质量"
+    source: narrative/financial_quality.md
+  - id: risks
+    title: "风险因素"
+    source: narrative/risks.md
+  - id: conclusion
+    title: "结论"
+    source: narrative/conclusion.md

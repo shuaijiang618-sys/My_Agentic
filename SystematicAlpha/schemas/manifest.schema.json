@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manifest.schema.json",
+  "title": "Manifest",
+  "type": "object",
+  "required": ["run_id", "source_pdf", "sha256", "report_year"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "source_pdf": { "type": "string" },
+    "sha256": { "type": "string" },
+    "stock_code": { "type": "string" },
+    "company_name": { "type": "string" },
+    "report_year": { "type": "integer" },
+    "report_type": { "type": "string", "enum": ["annual", "semi_annual"] },
+    "page_count": { "type": "integer" },
+    "text_extractable": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}
