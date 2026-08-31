@@ -1,0 +1,32 @@
+{
+  "name": "med_rag_agent",
+  "version": "2.0.0",
+  "description": "医疗导诊与报告解释 Multi-Agent — 工程化行为契约",
+  "model": "claude-3-5-sonnet-20241022",
+  "shared": {
+    "system_rules": "shared/system_rules.txt",
+    "few_shot": "shared/few_shot.txt",
+    "workflow": "shared/workflow.txt",
+    "injection_guard": "shared/injection_guard.txt"
+  },
+  "agents": {
+    "triage": "agents/triage_role.txt",
+    "report": "agents/report_role.txt",
+    "general": "agents/general_role.txt"
+  },
+  "rag": "rag/context.yaml",
+  "changelog": [
+    {
+      "version": "2.0.0",
+      "date": "2026-08-27",
+      "type": "major",
+      "summary": "工程化升级：角色/边界/三段式、Few-shot、注入防护、固定规则与运行时数据分离"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-03-01",
+      "type": "major",
+      "summary": "初始外置 Prompt：agents.yaml + RAG 模板 + security 拒答"
+    }
+  ]
+}

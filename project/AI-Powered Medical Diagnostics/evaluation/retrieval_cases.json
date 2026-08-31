@@ -1,0 +1,71 @@
+{
+  "description": "RAG 门禁阈值标定集；扩展后重新运行 scripts/eval_retrieval_threshold.py",
+  "cases": [
+    {
+      "name": "alt_high",
+      "query": "ALT 52 偏高是什么意思",
+      "should_answer": true,
+      "note": "lab_item"
+    },
+    {
+      "name": "triage_abdominal",
+      "query": "肚子胀恶心应该挂什么科",
+      "should_answer": true,
+      "note": "department"
+    },
+    {
+      "name": "blood_pressure",
+      "query": "血压偏高要注意什么",
+      "should_answer": true,
+      "note": "popular_science"
+    },
+    {
+      "name": "registration_flow",
+      "query": "门诊挂号流程是怎样的",
+      "should_answer": true,
+      "note": "hospital_flow"
+    },
+    {
+      "name": "respiratory_triage",
+      "query": "咳嗽胸闷看什么科",
+      "should_answer": true,
+      "note": "department"
+    },
+    {
+      "name": "oob_crp",
+      "query": "CRP 180 严重吗",
+      "should_answer": false,
+      "note": "默认库无 CRP"
+    },
+    {
+      "name": "oob_psa",
+      "query": "PSA 4.5 需要担心吗",
+      "should_answer": false,
+      "note": "默认库无 PSA"
+    },
+    {
+      "name": "off_topic_stock",
+      "query": "今天股票怎么样",
+      "should_answer": false,
+      "note": "非医疗"
+    },
+    {
+      "name": "off_topic_code",
+      "query": "帮我写一段 Python 代码",
+      "should_answer": false,
+      "note": "非医疗"
+    },
+    {
+      "name": "vague_short",
+      "query": "嗯",
+      "should_answer": false,
+      "note": "过短"
+    },
+    {
+      "name": "wrong_domain",
+      "query": "王者荣耀怎么上分",
+      "should_answer": false,
+      "note": "非医疗"
+    }
+  ]
+}

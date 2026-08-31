@@ -1,0 +1,56 @@
+# 结构化输出：triage / report / general Agent 须返回 JSON，由模板渲染为固定段落
+version: "2.0.0"
+
+agents:
+  triage:
+    enabled: true
+    template: templates/triage_response.md
+    required_fields:
+      - symptom_summary
+      - suggested_departments
+      - visit_advice
+    instruction: |
+      【输出格式 — 必须遵守】
+      仅返回一个 JSON 对象，不要 Markdown 代码块，不要前后解释。
+      字段说明：
+        - symptom_summary: 复述用户症状（用「可能」「常见」等措辞，禁止确诊）
+        - suggested_departments: 数组，1–2 项，每项含 name（科室）、reason（理由）
+        - visit_advice: 何时挂急诊、建议携带资料等
+        - clarifying_questions: 可选数组，需用户补充的信息（0–3 条）
+      示例：
+      {"symptom_summary":"...","suggested_departments":[{"name":"消化内科","reason":"..."}],"visit_advice":"...","clarifying_questions":["症状持续多久？"]}
+
+  report:
+    enabled: true
+    template: templates/report_response.md
+    required_fields:
+      - indicator_meaning
+      - common_factors
+      - next_steps
+    instruction: |
+      【输出格式 — 必须遵守】
+      仅返回一个 JSON 对象，不要 Markdown 代码块，不要前后解释。
+      字段说明：
+        - indicator_meaning: 指标测量什么、一般如何理解（禁止下诊断）
+        - common_factors: 字符串数组，常见非诊断性影响因素（1–4 条）
+        - next_steps: 建议复查或咨询哪个科室
+        - data_note: 可选，说明是否依据知识库检索结果
+      示例：
+      {"indicator_meaning":"...","common_factors":["..."],"next_steps":"...","data_note":"..."}
+
+  general:
+    enabled: true
+    template: templates/general_response.md
+    required_fields:
+      - topic_summary
+      - answer
+    instruction: |
+      【输出格式 — 必须遵守】
+      仅返回一个 JSON 对象，不要 Markdown 代码块，不要前后解释。
+      字段说明：
+        - topic_summary: 简要理解用户问题（挂号/流程/科室/检查准备等）
+        - answer: 主要解答（禁止确诊、开方；用「通常」「一般」等措辞）
+        - practical_tips: 可选字符串数组，实用提示（0–3 条）
+        - follow_up: 可选，建议下一步或需补充的信息
+      示例：
+      {"topic_summary":"...","answer":"...","practical_tips":["..."],"follow_up":"..."}

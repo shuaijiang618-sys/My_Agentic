@@ -1,0 +1,12 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+data/chroma/
+logs/*.jsonl
+logs/eval/
+prometheus/alertmanager.generated.yml
+.idea/
+.DS_Store
+frontend/node_modules/
+frontend/dist/

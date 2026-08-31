@@ -1,0 +1,25 @@
+# AI-Powered Medical Diagnostics — Prometheus 抓取与告警规则
+global:
+  scrape_interval: 15s
+  evaluation_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 127.0.0.1:9093
+
+rule_files:
+  - alerts/medical-diagnostics.yml
+  - recording_rules/medical-kpi.yml
+
+scrape_configs:
+  # Docker 内 Prometheus 抓取宿主机 API；裸机 Prometheus 可改为 127.0.0.1:8010
+  - job_name: medical-diagnostics
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - host.docker.internal:8010
+        labels:
+          service: medical-diagnostics
+          env: local

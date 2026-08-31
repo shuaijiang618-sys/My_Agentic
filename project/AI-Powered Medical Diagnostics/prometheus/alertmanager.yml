@@ -1,0 +1,7 @@
+# 请勿直接编辑本文件用于 Docker 启动。
+# 运行 ./scripts/start_prometheus.sh 时会生成 alertmanager.generated.yml：
+#   - 无 SLACK_WEBHOOK_URL → 使用 alertmanager.local.yml
+#   - 有 SLACK_WEBHOOK_URL → 使用 alertmanager.slack.yml.template
+#
+# 本地裸机 Alertmanager 可指定：
+#   --config.file=prometheus/alertmanager.local.yml

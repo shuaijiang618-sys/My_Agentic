@@ -1,0 +1,46 @@
+# 业务 KPI 预聚合比率（配合 monitor/metrics.py 原始 Counter/Histogram）
+groups:
+  - name: medical_diagnostics_kpi_rates
+    interval: 30s
+    rules:
+      - record: medical:rag_hit_rate:5m
+        expr: |
+          sum(rate(medical_chat_rag_hits_total[5m]))
+          / clamp_min(sum(rate(medical_chat_rag_queries_total[5m])), 0.001)
+
+      - record: medical:effective_answer_rate:5m
+        expr: |
+          sum(rate(medical_chat_effective_answers_total[5m]))
+          / clamp_min(sum(rate(medical_chat_requests_total[5m])), 0.001)
+
+      - record: medical:hitl_rate:5m
+        expr: |
+          sum(rate(medical_chat_hitl_total[5m]))
+          / clamp_min(sum(rate(medical_chat_requests_total[5m])), 0.001)
+
+      - record: medical:answer_success_rate:5m
+        expr: |
+          sum(rate(medical_chat_requests_total{outcome="success"}[5m]))
+          / clamp_min(sum(rate(medical_chat_requests_total[5m])), 0.001)
+
+      - record: medical:llm_failure_rate:5m
+        expr: |
+          sum(rate(medical_llm_errors_total[5m]))
+          / clamp_min(sum(rate(medical_llm_attempts_total[5m])), 0.001)
+
+      - record: medical:llm_timeout_rate:5m
+        expr: |
+          sum(rate(medical_llm_errors_total{reason="timeout"}[5m]))
+          / clamp_min(sum(rate(medical_llm_attempts_total[5m])), 0.001)
+
+      - record: medical:chat_latency_avg_seconds:5m
+        expr: |
+          sum(rate(medical_chat_latency_seconds_sum[5m]))
+          / clamp_min(sum(rate(medical_chat_latency_seconds_count[5m])), 0.001)
+
+      - record: medical:chat_latency_p99_seconds:5m
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(rate(medical_chat_latency_seconds_bucket[5m])) by (le)
+          )

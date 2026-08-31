@@ -1,0 +1,164 @@
+# 告警规则 — 配合 monitor/metrics.py 暴露的指标
+groups:
+  - name: medical_diagnostics_availability
+    rules:
+      - alert: MedicalApiDown
+        expr: up{job="medical-diagnostics"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: medical-diagnostics
+        annotations:
+          summary: "Medical Diagnostics 不可抓取"
+          description: "Prometheus 无法从 {{ $labels.instance }} 拉取 /metrics，请检查 ./scripts/start.sh 是否在运行。"
+          runbook_url: "prometheus/README.md#medicalapidown"
+
+      - alert: KnowledgeBaseEmpty
+        expr: medical_knowledge_chunks == 0
+        for: 10m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "知识库片段数为 0"
+          description: "Evidence-first 可能大面积拒答。执行 ./scripts/import_knowledge.sh 导入 data/medical_knowledge。"
+
+  - name: medical_diagnostics_quality
+    rules:
+      - alert: AgentSuccessRateLow
+        expr: agent_success_rate < 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "Agent {{ $labels.agent }} 成功率低于 85%"
+          description: "当前 {{ $value | humanizePercentage }}。检查 LLM 连通性、Prompt 与 Safety Judge 日志。"
+
+      - alert: KnowledgeSearchToolDegraded
+        expr: tool_success_rate{tool="knowledge_search"} < 0.5
+        for: 3m
+        labels:
+          severity: critical
+          service: medical-diagnostics
+        annotations:
+          summary: "知识检索工具 knowledge_search 成功率过低"
+          description: "当前 {{ $value | humanizePercentage }}。优先检查 ChromaDB 与 embedding 配置。"
+
+      - alert: AgentLatencyHigh
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(rate(agent_latency_ms_bucket[5m])) by (le, agent)
+          ) > 8000
+        for: 5m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "Agent {{ $labels.agent }} P99 延迟超过 8s"
+          description: "当前约 {{ $value | humanizeDuration }}。"
+
+      - alert: ChatLatencyHigh
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(rate(medical_chat_latency_seconds_bucket[5m])) by (le)
+          ) > 15
+        for: 5m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "Chat 端点 P99 延迟超过 15s"
+          description: "检查 LLM API 限流与 RAG 检索耗时。"
+
+  - name: medical_diagnostics_safety
+    rules:
+      - alert: RagEmptyRateHigh
+        expr: |
+          (
+            sum(rate(medical_rag_empty_results_total[15m]))
+            /
+            clamp_min(sum(rate(medical_chat_requests_total[15m])), 0.001)
+          ) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "RAG 空结果比例过高（>50%）"
+          description: "检索频繁无命中，用户可能大量收到「无证据拒答」。检查知识库内容与 embedding。"
+
+      - alert: KnowledgeGateMayBeBypassed
+        expr: |
+          (
+            sum(rate(medical_rag_empty_results_total[30m]))
+            /
+            clamp_min(sum(rate(medical_chat_requests_total[30m])), 0.001)
+          ) > 0.3
+          and
+          (
+            sum(rate(medical_knowledge_gate_blocks_total[30m]))
+            /
+            clamp_min(sum(rate(medical_chat_requests_total[30m])), 0.001)
+          ) < 0.05
+        for: 15m
+        labels:
+          severity: critical
+          service: medical-diagnostics
+        annotations:
+          summary: "空检索多但 RAG 门禁拦截极少，疑似门禁失效"
+          description: "对比 medical_rag_empty_results_total 与 medical_knowledge_gate_blocks_total，排查 check_knowledge_gate 是否被绕过。"
+
+      - alert: SafetyJudgeInactive
+        expr: |
+          sum(rate(medical_safety_judge_blocks_total[6h])) == 0
+          and sum(rate(medical_chat_requests_total{outcome="success"}[6h])) > 0.01
+        for: 30m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "Safety Judge 长时间无拦截记录"
+          description: "在有成功 Chat 流量的前提下 6h 内零拦截，可能 Judge 异常或规则过松。可用 ./scripts/run_safety_checks.sh 做离线回归。"
+
+      - alert: LlmErrorRateHigh
+        expr: sum(rate(medical_llm_errors_total[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "LLM 错误率过高（>0.05/s）"
+          description: "检查 DEEPSEEK/ANTHROPIC 连通性、LLM_TIMEOUT_S、API Key 与 base_url（勿重复 /v1）。"
+
+      - alert: LlmFailureRateHigh
+        expr: medical:llm_failure_rate:5m > 0.15
+        for: 5m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "LLM 接入失败率 >15%（5m）"
+          description: "当前 {{ $value | humanizePercentage }}。查看 medical_llm_errors_total 与 llm_attempts。"
+
+      - alert: EffectiveAnswerRateLow
+        expr: medical:effective_answer_rate:5m < 0.5
+        for: 10m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "有效回答率 <50%（5m）"
+          description: "有效回答 = Agent 成功 + Safety 通过。检查 LLM、RAG 与 Judge。"
+
+      - alert: RagHitRateLow
+        expr: medical:rag_hit_rate:5m < 0.2
+        for: 15m
+        labels:
+          severity: warning
+          service: medical-diagnostics
+        annotations:
+          summary: "RAG 命中率 <20%（5m）"
+          description: "执行 ./scripts/import_knowledge.sh 或检查 embedding/Chroma。"

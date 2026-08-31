@@ -1,0 +1,30 @@
+# 本地开发默认配置（无 Slack；告警仅在 Alertmanager UI 可见）
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: default
+  group_by: ["alertname", "service", "severity"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - severity="critical"
+      receiver: critical
+      repeat_interval: 1h
+    - matchers:
+        - severity="warning"
+      receiver: warning
+
+receivers:
+  - name: default
+  - name: critical
+  - name: warning
+
+inhibit_rules:
+  - source_matchers:
+      - severity="critical"
+    target_matchers:
+      - severity="warning"
+    equal: ["service", "alertname"]
